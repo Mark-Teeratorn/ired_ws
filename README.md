@@ -28,3 +28,5 @@ pip3 uninstall -y numpy
 pip3 install --break-system-packages "numpy==1.26.4"
 
 https://github.com/AIRLab-POLIMI/ros2-aruco-pose-estimation.git
+
+update Topic and Firware of Realsense
