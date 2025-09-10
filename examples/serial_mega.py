@@ -1,42 +1,32 @@
-// blinking led by usb serial communication
-const int ledPin = 13;  // pin number with built-in LED
+import serial, threading, sys
 
-void setup() {
-  Serial.begin(115200);    // Serial communication initialization
-  pinMode(ledPin, OUTPUT); // Set internal LED as output pin
-  Serial.println("Arduino ready. Send command like: pm1:3");  
-}
+PORT = '/dev/ttyUSB0'
+BAUD = 115200
 
-void loop() {
-  if (Serial.available()) {
-    String receivedString = Serial.readStringUntil('\n'); // read until newline
+ser = serial.Serial(PORT, BAUD, timeout=0.2)
+ser.reset_input_buffer()
 
-    // Print back what was received (echo)
-    Serial.print("Received: ");
-    Serial.println(receivedString);
+def reader():
+    while True:
+        try:
+            line = ser.readline()  # reads until \n or timeout
+            if line:
+                print("[ARDUINO]", line.decode(errors='ignore').rstrip())
+        except Exception as e:
+            print("Reader error:", e)
+            break
 
-    // Internal LED control when 'pm1' string is received
-    if (receivedString.startsWith("pm1")) {
-      int num = receivedString.substring(4).toInt(); // extract number
-      Serial.print("Blinking LED ");
-      Serial.print(num);
-      Serial.println(" times...");
+t = threading.Thread(target=reader, daemon=True)
+t.start()
 
-      blinkLED(num);
-
-      Serial.println("Done blinking.");
-    }
-  }
-}
-
-void blinkLED(int times) {
-  for (int i = 0; i < times; i++) {
-    Serial.print("Blink #");
-    Serial.println(i + 1);
-
-    digitalWrite(ledPin, HIGH);
-    delay(1000);
-    digitalWrite(ledPin, LOW);
-    delay(1000);
-  }
-}
+print("Type commands like: pm1:3 (Ctrl+C to quit)")
+try:
+    while True:
+        msg = input()
+        # ensure newline so Arduino's readStringUntil('\n') returns
+        ser.write((msg + "\n").encode())
+except KeyboardInterrupt:
+    pass
+finally:
+    ser.close()
+    print("\nClosed.")
