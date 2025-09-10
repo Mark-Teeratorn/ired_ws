@@ -19,6 +19,10 @@ And, then udevadm control to modify the internal state of the running udev dameo
 sudo udevadm control --reload-rules
 sudo udevadm trigger
 
-sudo apt install -y ros-jazzy-realsense2-camera
+sudo apt update
+sudo apt install -y ros-jazzy-realsense2-camera ros-jazzy-realsense2-description librealsense2-utils
+
+pip3 uninstall -y numpy
+pip3 install --break-system-packages "numpy==1.26.4"
 
 https://github.com/AIRLab-POLIMI/ros2-aruco-pose-estimation.git
