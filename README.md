@@ -20,7 +20,9 @@ sudo udevadm control --reload-rules
 sudo udevadm trigger
 
 sudo apt update
-sudo apt install -y ros-jazzy-realsense2-camera ros-jazzy-realsense2-description librealsense2-utils
+sudo apt install -y ros-jazzy-realsense2-camera ros-jazzy-realsense2-description
+
+pip3 install --break-system-packages opencv-python opencv-contrib-python transforms3d
 
 pip3 uninstall -y numpy
 pip3 install --break-system-packages "numpy==1.26.4"
