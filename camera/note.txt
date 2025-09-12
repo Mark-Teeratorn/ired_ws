@@ -1,0 +1,16 @@
+ros2 launch aruco_pose_estimation aruco_pose_estimation.launch.py
+or change parameters directl
+ros2 launch aruco_pose_estimation aruco_pose_estimation.launch.py marker_size:=0.1 aruco_dictionary_id:=DICT_5X5_250 camera_frame:=camera_link
+
+DICT_5X5_250 : we using 5x5 for the task 
+
+then after that change the aruco_node.py file to show tf2 pose 
+
+after launch 
+
+Source the workspace that built aruco_interfaces (the msg pkg)
+ ~/aruco_ws with YOUR workspace that contains the repo’s src/aruco_interfaces
+
+source ~/aruco_ws/install/setup.bash
+
+so ros2 can see the msg type 
